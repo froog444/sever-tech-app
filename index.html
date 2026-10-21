@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Sever Tech Shop</title>
+    <!-- Скрипт Telegram, без него окно не поймёт, что оно внутри Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg: #0f0f17;
+            --card: #1a1a2e;
+            --accent: #4a86ff;
+            --text: #e8e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+        .title { font-size: 20px; font-weight: 700; }
+        .subtitle { font-size: 13px; opacity: 0.6; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .card:active { transform: scale(0.96); }
+        .card .emoji { font-size: 32px; margin-bottom: 8px; }
+        .card .label { font-size: 14px; font-weight: 600; }
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="avatar">🎧</div>
+        <div>
+            <div class="title">Sever Tech Shop</div>
+            <div class="subtitle" id="user-name">Загрузка…</div>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="card" onclick="showAlert('Каталог в разработке')">
+            <div class="emoji">🛍</div>
+            <div class="label">Каталог</div>
+        </div>
+        <div class="card" onclick="showAlert('Корзина в разработке')">
+            <div class="emoji">🛒</div>
+            <div class="label">Корзина</div>
+        </div>
+        <div class="card" onclick="showAlert('Заказы в разработке')">
+            <div class="emoji">📦</div>
+            <div class="label">Мои заказы</div>
+        </div>
+        <div class="card" onclick="showAlert('Поддержка в разработке')">
+            <div class="emoji">💬</div>
+            <div class="label">Поддержка</div>
+        </div>
+    </div>
+
+    <div class="footer">Работает внутри Telegram</div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.ready();     // сообщаем Telegram, что приложение готово
+        tg.expand();    // разворачиваем на весь экран
+
+        // Показываем имя пользователя (если Telegram передал данные)
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name').textContent =
+                (user.first_name || '') + (user.last_name ? ' ' + user.last_name : '');
+        } else {
+            document.getElementById('user-name').textContent = 'Гость';
+        }
+
+        function showAlert(text) {
+            // Простое уведомление внутри Mini App (не алерт браузера)
+            tg.showAlert(text);
+        }
+    </script>
+</body>
+</html>
